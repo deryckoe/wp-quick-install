@@ -20,7 +20,12 @@ class Install_Command {
     public function __invoke() {
         $foldername = basename( getcwd() );
 
-        if ( ! empty( glob( "*", GLOB_NOCHECK ) ) ) {
+        // Check if the folder is empty excluding dotfiles and hidden files
+        $files = array_filter( glob( "*", GLOB_NOCHECK ), function( $file ) {
+            return ! preg_match( '/^\./', $file );
+        });
+
+        if ( ! empty( $files ) ) {
             WP_CLI::confirm( "The folder is not empty. Do you want to continue?" );
         }
 
