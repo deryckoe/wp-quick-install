@@ -20,14 +20,8 @@ class Install_Command {
     public function __invoke() {
         $foldername = basename( getcwd() );
 
-        // Check if the folder is empty excluding dotfiles and hidden files
-        $files = array_filter( glob( "*", GLOB_NOCHECK ), function( $file ) {
-            return ! preg_match( '/^\./', $file );
-        });
-
-        if ( ! empty( $files ) ) {
-            WP_CLI::confirm( "The folder is not empty. Do you want to continue?" );
-        }
+        // Confirm with the user if they are sure about installing WordPress in the current directory
+        WP_CLI::confirm( "Are you sure you want to install WordPress in the directory '{$foldername}'?" );
 
         WP_CLI::log( "Downloading WordPress core..." );
         WP_CLI::runcommand( 'core download' );
